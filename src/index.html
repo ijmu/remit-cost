@@ -73,6 +73,22 @@ font-variant-numeric:tabular-nums}
 .notes ul{margin:0;padding-left:19px;color:var(--dim);font-size:13.5px;line-height:1.75}
 .notes li{margin-bottom:7px}
 .notes li b{color:var(--tx);font-weight:600}
+.shr{margin:18px 0}
+.sharebtn{width:100%;background:var(--card);border:1px solid var(--line);color:var(--tx);
+border-radius:11px;padding:15px;font:600 15px inherit;cursor:pointer;display:flex;
+align-items:center;justify-content:center;gap:9px}
+.sharebtn:active{transform:scale(.99)}
+.sharebtn:hover{border-color:var(--gold);color:var(--gold)}
+#ov{position:fixed;inset:0;background:rgba(3,6,10,.94);z-index:50;display:none;
+align-items:center;justify-content:center;padding:16px;overflow:auto}
+#ov.on{display:flex}
+#ov .box{max-width:420px;width:100%;text-align:center}
+#ov img{width:100%;border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+#ov .tip{color:var(--dim);font-size:12.5px;margin-top:13px;line-height:1.65}
+#ov .btns{display:flex;gap:10px;margin-top:15px}
+#ov button{flex:1;background:var(--card);border:1px solid var(--line);color:var(--tx);
+border-radius:10px;padding:12px;font:600 14px inherit;cursor:pointer}
+#ov button.pri{background:linear-gradient(180deg,#e3b341,#b8901f);color:#1a1408;border-color:#e3b341}
 .cta{background:linear-gradient(135deg,#1a1408,#151a21);border:1px solid #3d3117;border-radius:14px;
 padding:24px;text-align:center;margin:26px 0}
 .cta h2{font-size:17.5px;margin-bottom:9px;font-weight:700}
@@ -131,6 +147,10 @@ padding:13px 30px;border-radius:10px;text-decoration:none;font-size:15px;letter-
     <div id="yrlines"></div>
   </div>
 
+  <div class="shr">
+    <button class="sharebtn" id="shareimg">📤 <span id="shlbl">生成分享图 · 发到群里</span></button>
+  </div>
+
   <div class="notes">
     <h3 id="n-h">几点必须说清楚</h3>
     <ul id="n-list"></ul>
@@ -145,6 +165,15 @@ padding:13px 30px;border-radius:10px;text-decoration:none;font-size:15px;letter-
   <div class="disc" id="disc"></div>
   <div class="src" id="src"></div>
 </div>
+
+<div id="ov"><div class="box">
+  <img id="ovimg" alt="share">
+  <div class="tip" id="ovtip"></div>
+  <div class="btns">
+    <button id="ovdl">下载图片</button>
+    <button class="pri" id="ovclose">关闭</button>
+  </div>
+</div></div>
 
 <script>
 const DATA = __DATA__;
@@ -286,11 +315,172 @@ function render(){
   $("#n-list").innerHTML=T.notes.map(x=>`<li>${x}</li>`).join("");
   $("#cta-h").textContent=T.ctaH; $("#cta-p").innerHTML=T.ctaP; $("#cta-btn").textContent=T.ctaBtn;
   $("#cta-btn").href=REF;
+  $("#shlbl").textContent = LANG==="zh" ? "生成分享图 · 发到群里" : "Create a share image";
   $("#disc").innerHTML=T.disc; $("#src").textContent=T.src;
 }
 $("#langbtn").onclick=()=>{LANG=LANG==="zh"?"en":"zh";render();};
 $("#amt").oninput=render;
 $("#to").onchange=render;
+
+/* ═══ 分享成图 ═══
+   WhatsApp / Telegram 群里一张图转发就是一次传播 —— 移民社群的主要传播形式。
+   canvas 直接绘制（不走 SVG 光栅化，部分 WebView 会静默失败）。
+   toDataURL 同步主路径 + toBlob 兜底（号码玄机踩过 toBlob 回调永不触发的坑）。 */
+const T2 = {
+  zh:{ lost:"每年被手续费吃掉", on:"按", tch:"传统渠道平均成本", brk:"换个渠道，能省下",
+       foot:"免费算你自己的：", haul:"钱不该在回家路上变少",
+       reg:"开户免费 · 转入后即可汇款 · 不开通付费服务",
+       rows:["传统渠道","移动钱包","数字渠道最优"],
+       save:"改走最省渠道，一年省下" },
+  en:{ lost:"Lost to fees every year", on:"Based on", tch:"avg. traditional cost", brk:"Switching saves",
+       foot:"Check your own numbers, free:", haul:"Money shouldn't shrink on the way home",
+       reg:"Opening an account is free — no paid services involved",
+       rows:["Traditional","Mobile wallet","Best digital"],
+       save:"Switching to the cheapest saves" }
+};
+
+function drawShare(){
+  const T=T2[LANG], {amt,c,rows}=compute();
+  const trad=rows[0], dig=rows[2], mob=rows[1];
+  const W=1080,H=1350, P=72;
+  const cv=document.createElement("canvas");
+  cv.width=W; cv.height=H;
+  const x=cv.getContext("2d");
+  const FF='-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB",Roboto,"Helvetica Neue",Arial,sans-serif';
+  // 背景
+  const bg=x.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,"#0d1117"); bg.addColorStop(1,"#101722");
+  x.fillStyle=bg; x.fillRect(0,0,W,H);
+  // 顶饰
+  const gd=x.createLinearGradient(0,0,W,0);
+  gd.addColorStop(0,"#e3b341"); gd.addColorStop(1,"#0d1117");
+  x.fillStyle=gd; x.fillRect(0,0,W,6);
+  const F=(s,w)=>`${w||700} ${s}px ${FF}`;
+  const M=n=>"$"+Math.round(n).toLocaleString("en-US");
+  const M2=n=>"$"+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  x.textAlign="center";
+  // 国旗式国家标记
+  x.fillStyle="#8b949e"; x.font=F(30,600);
+  x.fillText(LANG==="zh"?`汇款到 ${c.n}`:`Sending to ${c.en||c.n}`, W/2, 118);
+  // 主数字
+  x.fillStyle="#8b949e"; x.font=F(32,500);
+  x.fillText(T.lost, W/2, 214);
+  x.fillStyle="#f85149"; x.font=F(112,800);
+  x.fillText(M(trad.yr), W/2, 330);
+  x.fillStyle="#5b6672"; x.font=F(27,400);
+  x.fillText(`${T.on} ${M(amt)} × ${trad.pct.toFixed(1)}% ${T.tch}`, W/2, 382);
+
+  // 分隔
+  x.strokeStyle="#232a33"; x.lineWidth=2;
+  x.beginPath(); x.moveTo(P,440); x.lineTo(W-P,440); x.stroke();
+
+  // 三条渠道
+  const list=[[T.rows[0],trad,"#f85149"],[T.rows[1],mob,"#d29922"],[T.rows[2],dig,"#3fb950"]];
+  let y=516;
+  list.forEach((it,i)=>{
+    const [nm,r,col]=it;
+    x.textAlign="left";
+    x.fillStyle="#e6edf3"; x.font=F(34,600);
+    x.fillText(nm,P,y);
+    x.textAlign="right";
+    x.fillStyle=col; x.font=F(38,700);
+    x.fillText(r.pct.toFixed(1)+"%", W-P-190, y);
+    x.fillStyle="#8b949e"; x.font=F(28,400);
+    x.fillText(M(r.yr)+"/yr", W-P, y);
+    // 进度条
+    const bw=W-P*2;
+    x.fillStyle="#1c2129"; roundRect(x,P,y+18,bw,8,4); x.fill();
+    x.fillStyle=col; roundRect(x,P,y+18,Math.max(10,bw*(r.yr/list[0][1].yr)),8,4); x.fill();
+    y+=112;
+  });
+
+  // 节省卡
+  const sav=trad.yr-dig.yr;
+  y+=20;
+  x.fillStyle="#121b14"; roundRect(x,P,y,W-P*2,132,16); x.fill();
+  x.strokeStyle="#2d5a35"; x.lineWidth=2; roundRect(x,P,y,W-P*2,132,16); x.stroke();
+  x.textAlign="left"; x.fillStyle="#8b949e"; x.font=F(28,500);
+  x.fillText(T.save, P+30, y+52);
+  x.textAlign="right"; x.fillStyle="#3fb950"; x.font=F(56,800);
+  x.fillText(M(sav), W-P-30, y+58);
+  x.textAlign="left"; x.fillStyle="#5b6672"; x.font=F(24,400);
+  x.fillText(LANG==="zh"?"这笔钱本来能到家。":"That money should have arrived.", P+30, y+102);
+
+  // 底部
+  x.textAlign="center";
+  x.fillStyle="#2a3139"; x.fillRect(P,H-258,W-P*2,2);
+  x.fillStyle="#e3b341"; x.font=F(31,700);
+  x.fillText(T.haul, W/2, H-198);
+  x.fillStyle="#8b949e"; x.font=F(27,400);
+  x.fillText(T.foot, W/2, H-146);
+  x.fillStyle="#e6edf3"; x.font=F(36,800);
+  x.fillText("remitcalc.pages.dev", W/2, H-92);
+  // 开户入口：图里必须带上，否则传播链断在这里
+  x.fillStyle="#8b949e"; x.font=F(23,400);
+  x.fillText(T.reg, W/2, H-44);
+
+  return cv;
+}
+
+/* 生成图片文件（用于系统分享面板） */
+function shareFile(){
+  return new Promise(res=>{
+    const cv=drawShare();
+    let done=false;
+    const fin=v=>{ if(!done){ done=true; res(v); } };
+    try{
+      cv.toBlob(b=>{ fin(b? new File([b],`remitcost-${LANG}.png`,{type:"image/png"}) : null); },"image/png");
+      setTimeout(()=>fin(null), 4000);   // toBlob 回调可能永不触发 → 超时兜底
+    }catch(e){ fin(null); }
+  });
+}
+function roundRect(x,px,py,w,h,r){
+  x.beginPath();
+  x.moveTo(px+r,py); x.arcTo(px+w,py,px+w,py+h,r); x.arcTo(px+w,py+h,px,py+h,r);
+  x.arcTo(px,py+h,px,py,r); x.arcTo(px,py,px+w,py,r); x.closePath();
+}
+
+async function showShare(){
+  // 优先：系统分享面板（图 + 文案 → 直达 WhatsApp / Telegram）
+  const nav=window.navigator;
+  const active=!nav.userActivation||nav.userActivation.isActive!==false;
+  if(nav.share&&active){
+    const f=await shareFile();
+    if(f){
+      const {rows,amt,c}=compute();
+      const txt = LANG==="zh"
+        ? `汇款到${c.n}：每年被手续费吃掉 $${Math.round(rows[0].yr)}，最省渠道只要 $${Math.round(rows[2].yr)}。`
+        : `Sending to ${c.en||c.n}: $${Math.round(rows[0].yr)}/yr in fees, vs $${Math.round(rows[2].yr)} via the cheapest channel.`;
+      try{
+        const p=nav.share({files:[f], text:txt+" remitcalc.pages.dev",
+          title: LANG==="zh"?"汇款成本计算器":"Remittance Cost Calculator"});
+        const r=await Promise.race([p.then(()=>"ok").catch(()=>"err"),
+          new Promise(x=>setTimeout(()=>x("timeout"),10000))]);
+        if(r==="ok") return;
+      }catch(e){}
+    }
+  }
+  // 兜底：弹层看图 / 下载（长按保存）
+  let dataURL;
+  try{ dataURL=drawShare().toDataURL("image/png"); }
+  catch(e){ alert(LANG==="zh"?"出图失败，请重试":"Image failed, please retry"); return; }
+  const img=$("#ovimg");
+  img.src=dataURL;
+  $("#ovtip").textContent = LANG==="zh"
+    ? "长按图片保存，或点下方下载。发到 WhatsApp / Telegram 群里，让更多工友看清这笔账。"
+    : "Long-press to save, or download below. Share it in your WhatsApp / Telegram group.";
+  $("#ovdl").onclick=()=>{
+    const a=document.createElement("a");
+    a.href=dataURL; a.download=`remitcost-${LANG}-${Math.round(Date.now()/1000)}.png`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  };
+  $("#ovclose").onclick=()=>$("#ov").classList.remove("on");
+  $("#ov").classList.add("on");
+}
+$("#shareimg").onclick=showShare;
+$("#ov").onclick=(e)=>{ if(e.target.id==="ov") $("#ov").classList.remove("on"); };
+
 render();
 </script>
 </body>
