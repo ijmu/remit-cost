@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>汇款成本计算器 · 你寄回家的钱，路上少了多少</title>
+<meta name="description" content="输入金额和国家，看清银行、汇款公司、数字渠道各吃掉你多少。一个每年寄 2000 美元回家的工人，银行渠道要多花 166 美元——那是能带回家的钱。">
+<meta name="keywords" content="remittance cost, 汇款手续费, 跨境汇款, 转账费用, migrant worker, send money home, 汇款比较">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="你寄回家的钱，路上少了多少？">
+<meta property="og:description" content="每年寄 2000 美元回家，银行渠道吃掉 228 美元，数字渠道 62 美元。差额是你能多带回家的钱。">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{
+--bg:#0d1117;--card:#161b22;--card2:#1c2129;--line:#2a3139;--tx:#e6edf3;--dim:#8b949e;--faint:#5b6672;
+--ok:#3fb950;--warn:#d29922;--bad:#f85149;--acc:#58a6ff;--gold:#e3b341;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB",Roboto,"Helvetica Neue",Arial,sans-serif;
+padding:0 0 60px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+header{padding:30px 0 20px;text-align:center;border-bottom:1px solid var(--line)}
+.hd-top{display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:14px}
+.lang{background:var(--card);border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:5px 14px;font-size:12.5px;cursor:pointer}
+.lang:hover{border-color:var(--acc);color:var(--tx)}
+h1{font-size:25px;line-height:1.32;letter-spacing:-.01em;font-weight:700}
+h1 em{color:var(--gold);font-style:normal}
+.sub{color:var(--dim);font-size:14px;margin-top:10px;line-height:1.62}
+.calc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:24px 0}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.field{flex:1;min-width:150px}
+.field label{display:block;font-size:12.5px;color:var(--dim);margin-bottom:7px;letter-spacing:.02em}
+input[type=number],select{width:100%;background:#0d1117;border:1px solid var(--line);color:var(--tx);
+border-radius:9px;padding:12px 13px;font-size:16px;font-family:inherit;-webkit-appearance:none;appearance:none}
+input[type=number]:focus,select:focus{outline:none;border-color:var(--acc)}
+select{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%238b949e' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.chip{background:#0d1117;border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:6px 13px;
+font-size:13px;cursor:pointer;font-variant-numeric:tabular-nums}
+.chip:hover{border-color:var(--acc);color:var(--tx)}
+.chip b{color:var(--tx);font-weight:600}
+.result{margin-top:4px}
+.big{background:linear-gradient(135deg,#1c1408,#161b22);border:1px solid #3d3117;border-radius:14px;
+padding:22px;text-align:center;margin:22px 0}
+.big .lbl{color:var(--dim);font-size:13px;letter-spacing:.03em}
+.big .amt{font-size:44px;font-weight:800;letter-spacing:-.02em;color:var(--bad);
+font-variant-numeric:tabular-nums;line-height:1.15;margin:6px 0}
+.big .note{color:var(--dim);font-size:13px;line-height:1.6}
+.meth{display:flex;flex-direction:column;gap:10px;margin:18px 0}
+.m{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px 15px;
+display:flex;align-items:center;gap:14px;position:relative;overflow:hidden}
+.m.best{border-color:#2d5a35;background:linear-gradient(135deg,#0f1a13,#161b22)}
+.m .nm{flex:1;min-width:0}
+.m .nm b{font-size:14.5px;display:block;font-weight:600}
+.m .nm span{font-size:12px;color:var(--faint)}
+.m .cost{text-align:right;font-variant-numeric:tabular-nums;flex:0 0 auto}
+.m .cost .p{font-size:19px;font-weight:700;line-height:1.2}
+.m .cost .u{font-size:12px;color:var(--dim)}
+.bar{height:4px;border-radius:2px;background:var(--line);margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:2px}
+.badge{font-size:10.5px;padding:2px 7px;border-radius:5px;background:#1f3a25;color:var(--ok);
+border:1px solid #2d5a35;margin-left:7px;vertical-align:1px;font-weight:600}
+.yr{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:17px;margin:20px 0}
+.yr h3{font-size:15px;margin-bottom:11px;font-weight:600}
+.yrline{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;border-bottom:1px solid #21262d;
+font-variant-numeric:tabular-nums}
+.yrline:last-child{border:0;padding-bottom:0;font-weight:700;font-size:15px;padding-top:11px}
+.gap{color:var(--ok)}
+.notes{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:17px;margin:22px 0}
+.notes h3{font-size:14.5px;margin-bottom:10px;font-weight:600}
+.notes ul{margin:0;padding-left:19px;color:var(--dim);font-size:13.5px;line-height:1.75}
+.notes li{margin-bottom:7px}
+.notes li b{color:var(--tx);font-weight:600}
+.cta{background:linear-gradient(135deg,#1a1408,#151a21);border:1px solid #3d3117;border-radius:14px;
+padding:24px;text-align:center;margin:26px 0}
+.cta h2{font-size:17.5px;margin-bottom:9px;font-weight:700}
+.cta p{color:var(--dim);font-size:13.5px;margin-bottom:17px;line-height:1.65}
+.btn{display:inline-block;background:linear-gradient(180deg,#e3b341,#b8901f);color:#1a1408;font-weight:700;
+padding:13px 30px;border-radius:10px;text-decoration:none;font-size:15px;letter-spacing:.01em}
+.btn:active{transform:scale(.985)}
+.disc{color:var(--faint);font-size:11.5px;text-align:center;line-height:1.7;margin-top:22px}
+.src{color:var(--faint);font-size:11.5px;line-height:1.7;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.flag{font-size:17px;margin-right:2px}
+@media(max-width:420px){h1{font-size:21px}.big .amt{font-size:36px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="hd-top"><span class="lang" id="langbtn">English</span></div>
+  <h1 id="h1">你寄回家的钱，<em>路上少了多少？</em></h1>
+  <p class="sub" id="sub">输入金额，看清每家渠道实际吃掉你多少钱。<br>这是你自己算得出来的账，不需要注册任何账号。</p>
+</div></header>
+
+<div class="wrap">
+  <div class="calc">
+    <div class="row">
+      <div class="field">
+        <label id="l-amt">汇款金额（美元）</label>
+        <input type="number" id="amt" value="200" min="1" step="10" inputmode="decimal">
+      </div>
+      <div class="field">
+        <label id="l-to">汇往哪里</label>
+        <select id="to"></select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label id="l-freq">每年汇款次数</label>
+        <div class="chips" id="freq">
+          <span class="chip" data-f="12">每月一次 <b>12</b></span>
+          <span class="chip" data-f="6">两月一次 <b>6</b></span>
+          <span class="chip" data-f="24">每月两次 <b>24</b></span>
+          <span class="chip" data-f="52">每周一次 <b>52</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="big">
+    <div class="lbl" id="big-lbl">用银行渠道，你每年被扣除</div>
+    <div class="amt" id="big-amt">—</div>
+    <div class="note" id="big-note"></div>
+  </div>
+
+  <div class="meth" id="meth"></div>
+
+  <div class="yr">
+    <h3 id="yr-h">一年下来这笔账</h3>
+    <div id="yrlines"></div>
+  </div>
+
+  <div class="notes">
+    <h3 id="n-h">几点必须说清楚</h3>
+    <ul id="n-list"></ul>
+  </div>
+
+  <div class="cta">
+    <h2 id="cta-h">想用更便宜的渠道？</h2>
+    <p id="cta-p">数字渠道和 P2P 转账需要先在交易所开户。<br>注册完全免费，不开通任何付费服务。</p>
+    <a class="btn" id="cta-btn" href="#">注册交易所 · 免费 →</a>
+  </div>
+
+  <div class="disc" id="disc"></div>
+  <div class="src" id="src"></div>
+</div>
+
+<script>
+const DATA = {"updated":"Thu, 01 Oct 2026 00:02:31 +0000","base":"USD","benchmark":{"global_avg":6.2,"bank":11.4,"mto":5.6,"mobile":4.1,"digital":3.1,"sdg_target":3.0},"corridors":[{"c":"PH","en":"Philippines","n":"菲律宾","r":"东亚与太平洋","trad":6.4,"dig":2.9,"cur":"PHP","rate":62.754655},{"c":"IN","en":"India","n":"印度","r":"南亚","trad":5.4,"dig":2.4,"cur":"INR","rate":95.997282},{"c":"PK","en":"Pakistan","n":"巴基斯坦","r":"南亚","trad":5.8,"dig":2.6,"cur":"PKR","rate":276.984011},{"c":"BD","en":"Bangladesh","n":"孟加拉","r":"南亚","trad":5.9,"dig":2.8,"cur":"BDT","rate":123.023346},{"c":"VN","en":"Vietnam","n":"越南","r":"东亚与太平洋","trad":6.6,"dig":3.1,"cur":"VND","rate":25935.273468},{"c":"ID","en":"Indonesia","n":"印度尼西亚","r":"东亚与太平洋","trad":6.9,"dig":3.2,"cur":"IDR","rate":17903.534018},{"c":"CN","en":"China","n":"中国","r":"东亚与太平洋","trad":7.2,"dig":3.4,"cur":"CNY","rate":6.716878},{"c":"TH","en":"Thailand","n":"泰国","r":"东亚与太平洋","trad":6.5,"dig":3.0,"cur":"THB","rate":33.580261},{"c":"MY","en":"Malaysia","n":"马来西亚","r":"东亚与太平洋","trad":6.3,"dig":2.9,"cur":"MYR","rate":4.078529},{"c":"NG","en":"Nigeria","n":"尼日利亚","r":"撒哈拉以南非洲","trad":7.9,"dig":3.8,"cur":"NGN","rate":1328.645734},{"c":"KE","en":"Kenya","n":"肯尼亚","r":"撒哈拉以南非洲","trad":7.6,"dig":3.5,"cur":"KES","rate":129.700459},{"c":"GH","en":"Ghana","n":"加纳","r":"撒哈拉以南非洲","trad":8.4,"dig":4.1,"cur":"GHS","rate":11.706717},{"c":"MX","en":"Mexico","n":"墨西哥","r":"拉美与加勒比","trad":5.9,"dig":2.7,"cur":"MXN","rate":18.077867},{"c":"BR","en":"Brazil","n":"巴西","r":"拉美与加勒比","trad":6.2,"dig":2.9,"cur":"BRL","rate":5.200393},{"c":"CO","en":"Colombia","n":"哥伦比亚","r":"拉美与加勒比","trad":5.7,"dig":2.6,"cur":"COP","rate":3333.963413},{"c":"TR","en":"Turkey","n":"土耳其","r":"欧洲与中亚","trad":6.4,"dig":3.0,"cur":"TRY","rate":49.048442},{"c":"UA","en":"Ukraine","n":"乌克兰","r":"欧洲与中亚","trad":6.7,"dig":3.3,"cur":"UAH","rate":44.735432},{"c":"EG","en":"Egypt","n":"埃及","r":"中东北非","trad":6.1,"dig":2.9,"cur":"EGP","rate":51.965687},{"c":"AR","en":"Argentina","n":"阿根廷","r":"拉美与加勒比","trad":6.8,"dig":3.4,"cur":"ARS","rate":1517.5209},{"c":"MA","en":"Morocco","n":"摩洛哥","r":"中东北非","trad":6.0,"dig":2.8,"cur":"MAD","rate":9.685424}]};
+const REF = "https://www.binance.com/join?ref=LBD1108";
+
+const TXT = {
+  zh: {
+    h1: ()=>'你寄回家的钱，<em>路上少了多少？</em>',
+    sub: "输入金额，看清每家渠道实际吃掉你多少钱。<br>这是你自己算得出来的账，不需要注册任何账号。",
+    lblAmt: "汇款金额（美元）", lblTo: "汇往哪里", lblFreq: "每年汇款次数",
+    freq: {12:"每月一次",6:"两月一次",24:"每月两次",52:"每周一次"},
+    bigLbl: "每年被手续费吃掉的钱",
+    bigNote: (n,avg,yrs)=>`按 <b>每次 ${n}</b>、<b>${avg}%</b> 的平均成本计算。<br>这笔钱本来能到家。`,
+    mk: {
+      trad: {n:"银行 / 线下汇款", s:"电汇 · 网点柜面 · 中间行扣费"},
+      mobile:{n:"移动钱包", s:"运营商 / 电子钱包（全球均值）"},
+      digital:{n:"数字渠道最优", s:"持牌线上汇款 · 实时到账"},
+      p2p: {n:"交易所 P2P", s:"点对点转账 · 需自行承担对手方风险"}
+    },
+    best: "最省", perMo: "每笔", perYr: "每年",
+    yrH: "一年下来这笔账",
+    yrLines: (amt,fr,costs)=>costs.map(c=>[c.n, c.yr]),
+    nH: "几点必须说清楚",
+    notes: [
+      "<b>为什么有的渠道贵 3 倍？</b>银行电汇要过 SWIFT 中间行，每一层都扣一次费；数字汇款的成本几乎只有外汇点差。",
+      "<b>汇率里也藏着成本。</b>有些渠道写着「零手续费」，却在汇率上加了 2-3%。本页的成本已包含汇率加价。",
+      "<b>交易所 P2P 更便宜，但有前提</b>：需要对方承接、自行承担对手方风险，且部分国家的 P2P 商家会因风控冻结账户。适合能自己判断风险的人。",
+      "<b>不要只看手续费。</b>到账速度、是否可追溯、出问题找谁，都是成本的一部分。",
+      "本工具不收任何费用，也不用注册。数字按公开的平均区间估算，实际以你的渠道报价为准。"
+    ],
+    ctaH: "想用更便宜的渠道？",
+    ctaP: "数字渠道和 P2P 转账需要先在交易所开户。<br>注册完全免费，不开通任何付费服务。",
+    ctaBtn: "注册交易所 · 免费 →",
+    disc: "本页为成本信息工具，不构成投资建议，不保证任何渠道的实际费率。<br>加密资产存在价格波动与法规风险，请自行判断。",
+    src: "成本基准：World Bank Remittance Prices Worldwide（按单笔 200 美元统计）· 汇率：open.er-api.com",
+  },
+  en: {
+    h1: ()=>'How much of your money <em>never makes it home?</em>',
+    sub: "Enter an amount and see what each channel really costs you.<br>Do the math yourself — no signup, no account.",
+    lblAmt: "Amount (USD)", lblTo: "Sending to", lblFreq: "Transfers per year",
+    freq: {12:"Monthly",6:"Every 2 mo",24:"Twice a month",52:"Weekly"},
+    bigLbl: "Lost to fees every year",
+    bigNote: (n,avg,yrs)=>`Based on <b>$${n}</b> per transfer at an average cost of <b>${avg}%</b>.<br>That money should have arrived.`,
+    mk: {
+      trad: {n:"Bank / branch", s:"Wire · counter service · intermediary fees"},
+      mobile:{n:"Mobile wallet", s:"Telco / e-wallet (global avg)"},
+      digital:{n:"Best digital", s:"Licensed online transfer · instant"},
+      p2p: {n:"Exchange P2P", s:"Peer-to-peer · you bear counterparty risk"}
+    },
+    best: "Cheapest", perMo: "each", perYr: "per year",
+    yrH: "The bill, over one year",
+    yrLines: (amt,fr,costs)=>costs.map(c=>[c.n, c.yr]),
+    nH: "Things worth being clear about",
+    notes: [
+      "<b>Why are some channels 3× more?</b> A bank wire hops through SWIFT intermediaries, and each one takes a cut. Digital transfers cost almost nothing but the FX spread.",
+      "<b>The exchange rate hides cost too.</b> Some providers advertise \"zero fee\" while adding 2–3% to the rate. The costs here already include that markup.",
+      "<b>Exchange P2P is usually cheaper, with conditions</b>: you need a counterparty, you carry the counterparty risk, and in some countries merchants face account freezes. Suited to people who can judge that risk themselves.",
+      "<b>Price isn't everything.</b> Speed, traceability, and who you can call when something breaks are all part of the real cost.",
+      "This tool is free and needs no signup. Figures use published average ranges; your provider's quote is the one that counts."
+    ],
+    ctaH: "Want to use a cheaper channel?",
+    ctaP: "Digital and P2P transfers require an exchange account.<br>Opening one is free — no paid services involved.",
+    ctaBtn: "Open a free account →",
+    disc: "This page is a cost-information tool. It is not investment advice and does not guarantee any provider's rates.<br>Crypto assets carry price and regulatory risk. Judge for yourself.",
+    src: "Cost benchmark: World Bank Remittance Prices Worldwide (based on $200 transfers) · FX: open.er-api.com",
+  }
+};
+
+/* 渠道成本口径：
+   - trad = 该走廊传统渠道（银行+线下网点）平均成本，来自世界银行分国别数据 ← 走廊特定
+   - mobile = 移动钱包全球平均
+   - dig  = 该走廊数字渠道最优 ← 走廊特定
+   - p2p  = 交易所点对点，仅作参考（有对手方风险，不参与「最省」评比） */
+const METHODS = [
+  {k:"trad",    cost:(c)=>c.trad,                 color:"var(--bad)"},
+  {k:"mobile",  cost:()=>DATA.benchmark.mobile,   color:"var(--warn)"},
+  {k:"digital", cost:(c)=>c.dig,                  color:"var(--ok)"},
+];
+let LANG = (navigator.language||"en").toLowerCase().startsWith("zh") ? "zh" : "en";
+let FREQ = 12;
+
+const $=s=>document.querySelector(s);
+const money=n=>"$"+n.toLocaleString(LANG==="zh"?"zh-CN":"en-US",{maximumFractionDigits:2,minimumFractionDigits:2});
+const money0=n=>"$"+Math.round(n).toLocaleString(LANG==="zh"?"zh-CN":"en-US");
+
+function country(){
+  const c=DATA.corridors.find(x=>x.c===($("#to").value));
+  return c||DATA.corridors[0];
+}
+function compute(){
+  const amt=Math.max(1, parseFloat($("#amt").value)||0);
+  const c=country();
+  const rows=METHODS.map(m=>({...m, pct:m.cost(c), per:amt*m.cost(c)/100, yr:amt*m.cost(c)/100*FREQ}));
+  // P2P 作为额外对比项（仅作参考值）
+  const p2pPct=1.5;
+  rows.push({k:"p2p", cost:()=>p2pPct, color:"#a371f7", pct:p2pPct, per:amt*p2pPct/100, yr:amt*p2pPct/100*FREQ, ref:true});
+  return {amt,c,rows};
+}
+function render(){
+  const T=TXT[LANG], {amt,c,rows}=compute();
+  $("#h1").innerHTML=T.h1(); $("#sub").innerHTML=T.sub;
+  $("#l-amt").textContent=T.lblAmt; $("#l-to").textContent=T.lblTo; $("#l-freq").textContent=T.lblFreq;
+  $("#langbtn").textContent = LANG==="zh"?"English":"中文";
+  document.documentElement.lang = LANG==="zh"?"zh-CN":"en";
+  $("#freq").innerHTML=[12,6,24,52].map(f=>`<span class="chip${f===FREQ?" on":""}" data-f="${f}" style="${f===FREQ?"border-color:var(--acc);color:var(--tx)":""}">${T.freq[f]} <b>${f}</b></span>`).join("");
+  $("#freq").querySelectorAll(".chip").forEach(el=>el.onclick=()=>{FREQ=+el.dataset.f;render();});
+  // 选择器
+  $("#to").innerHTML=DATA.corridors.map(x=>`<option value="${x.c}"${x.c===c.c?" selected":""}>${x.n} (${x.cur})</option>`).join("");
+
+  const trad=rows[0];
+  $("#big-lbl").textContent=T.bigLbl;
+  $("#big-amt").textContent=money0(trad.yr);
+  $("#big-note").innerHTML=LANG==="zh"
+    ? `按 <b>每次 ${money0(amt)}</b>、<b>${c.trad.toFixed(1)}%</b> 的${c.n}传统渠道平均成本计算。<br>这笔钱本来能到家。`
+    : `Based on <b>${money0(amt)}</b> per transfer at <b>${c.trad.toFixed(1)}%</b>, the average cost for ${c.n}.<br>That money should have arrived.`;
+
+  const best=Math.min(...rows.filter(r=>!r.ref).map(r=>r.yr));
+  const max=Math.max(...rows.map(r=>r.yr));
+  $("#meth").innerHTML=rows.map(r=>{
+    const mk=T.mk[r.k];
+    const isBest=!r.ref && r.yr===best;
+    const w=Math.max(4,(r.yr/max)*100);
+    return `<div class="m${isBest?" best":""}">
+      <div class="nm"><b>${mk.n}${isBest?`<span class="badge">${T.best}</span>`:""}${r.ref?` <span class="badge" style="background:#241f3a;color:#a371f7;border-color:#3d3160">ref</span>`:""}</b>
+      <span>${mk.s}</span>
+      <div class="bar"><i style="width:${w}%;background:${r.color}"></i></div></div>
+      <div class="cost"><div class="p" style="color:${r.color}">${r.pct.toFixed(1)}%</div>
+      <div class="u">${money(r.per)} ${T.perMo} · ${money0(r.yr)} ${T.perYr}</div></div></div>`;
+  }).join("");
+
+  const cheapest=rows.filter(r=>!r.ref).reduce((a,b)=>a.yr<b.yr?a:b);
+  const sav=trad.yr-cheapest.yr;
+  $("#yr-h").textContent=T.yrH;
+  $("#yrlines").innerHTML=[
+    ...rows.filter(r=>!r.ref).map(r=>`<div class="yrline"><span>${T.mk[r.k].n} · ${r.pct.toFixed(1)}%</span><span style="color:${r.color}">${money0(r.yr)}</span></div>`),
+    `<div class="yrline"><span>${LANG==="zh"?"改走最省渠道，一年省下":"Switching to the cheapest saves"}</span><span class="gap">${money0(sav)}</span></div>`
+  ].join("");
+  $("#n-h").textContent=T.nH;
+  $("#n-list").innerHTML=T.notes.map(x=>`<li>${x}</li>`).join("");
+  $("#cta-h").textContent=T.ctaH; $("#cta-p").innerHTML=T.ctaP; $("#cta-btn").textContent=T.ctaBtn;
+  $("#cta-btn").href=REF;
+  $("#disc").innerHTML=T.disc; $("#src").textContent=T.src;
+}
+$("#langbtn").onclick=()=>{LANG=LANG==="zh"?"en":"zh";render();};
+$("#amt").oninput=render;
+$("#to").onchange=render;
+render();
+</script>
+</body>
+</html>
