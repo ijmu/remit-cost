@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cost to send money to Togo: 8.6% vs 4.2%</title>
+<meta name="description" content="汇款到多哥的平均成本 8.6%，数字渠道最优 4.2%。每年寄 $2000 回家，差额 $88 是你能多带回家的钱。实时计算，免费，不用注册。 输入金额和国家，看清银行、汇款公司、数字渠道各吃掉你多少。一个每年寄 2000 美元回家的工人，银行渠道要多花 166 美元——那是能带回家的钱。">
+<meta name="keywords" content="remittance cost, 汇款手续费, 跨境汇款, 转账费用, migrant worker, send money home, 汇款比较">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="你寄回家的钱，路上少了多少？">
+<meta property="og:description" content="每年寄 2000 美元回家，银行渠道吃掉 228 美元，数字渠道 62 美元。差额是你能多带回家的钱。">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{
+--bg:#0d1117;--card:#161b22;--card2:#1c2129;--line:#2a3139;--tx:#e6edf3;--dim:#8b949e;--faint:#5b6672;
+--ok:#3fb950;--warn:#d29922;--bad:#f85149;--acc:#58a6ff;--gold:#e3b341;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB",Roboto,"Helvetica Neue",Arial,sans-serif;
+padding:0 0 60px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+header{padding:30px 0 20px;text-align:center;border-bottom:1px solid var(--line)}
+.hd-top{display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:14px}
+.lang{background:var(--card);border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:5px 14px;font-size:12.5px;cursor:pointer}
+.lang:hover{border-color:var(--acc);color:var(--tx)}
+h1{font-size:25px;line-height:1.32;letter-spacing:-.01em;font-weight:700}
+h1 em{color:var(--gold);font-style:normal}
+.sub{color:var(--dim);font-size:14px;margin-top:10px;line-height:1.62}
+.calc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:24px 0}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.field{flex:1;min-width:150px}
+.field label{display:block;font-size:12.5px;color:var(--dim);margin-bottom:7px;letter-spacing:.02em}
+input[type=number],select{width:100%;background:#0d1117;border:1px solid var(--line);color:var(--tx);
+border-radius:9px;padding:12px 13px;font-size:16px;font-family:inherit;-webkit-appearance:none;appearance:none}
+input[type=number]:focus,select:focus{outline:none;border-color:var(--acc)}
+select{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%238b949e' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.chip{background:#0d1117;border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:6px 13px;
+font-size:13px;cursor:pointer;font-variant-numeric:tabular-nums}
+.chip:hover{border-color:var(--acc);color:var(--tx)}
+.chip b{color:var(--tx);font-weight:600}
+.result{margin-top:4px}
+.big{background:linear-gradient(135deg,#1c1408,#161b22);border:1px solid #3d3117;border-radius:14px;
+padding:22px;text-align:center;margin:22px 0}
+.big .lbl{color:var(--dim);font-size:13px;letter-spacing:.03em}
+.big .amt{font-size:44px;font-weight:800;letter-spacing:-.02em;color:var(--bad);
+font-variant-numeric:tabular-nums;line-height:1.15;margin:6px 0}
+.big .note{color:var(--dim);font-size:13px;line-height:1.6}
+.meth{display:flex;flex-direction:column;gap:10px;margin:18px 0}
+.m{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px 15px;
+display:flex;align-items:center;gap:14px;position:relative;overflow:hidden}
+.m.best{border-color:#2d5a35;background:linear-gradient(135deg,#0f1a13,#161b22)}
+.m .nm{flex:1;min-width:0}
+.m .nm b{font-size:14.5px;display:block;font-weight:600}
+.m .nm span{font-size:12px;color:var(--faint)}
+.m .cost{text-align:right;font-variant-numeric:tabular-nums;flex:0 0 auto}
+.m .cost .p{font-size:19px;font-weight:700;line-height:1.2}
+.m .cost .u{font-size:12px;color:var(--dim)}
+.bar{height:4px;border-radius:2px;background:var(--line);margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:2px}
+.badge{font-size:10.5px;padding:2px 7px;border-radius:5px;background:#1f3a25;color:var(--ok);
+border:1px solid #2d5a35;margin-left:7px;vertical-align:1px;font-weight:600}
+.yr{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:17px;margin:20px 0}
+.yr h3{font-size:15px;margin-bottom:11px;font-weight:600}
+.yrline{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;border-bottom:1px solid #21262d;
+font-variant-numeric:tabular-nums}
+.yrline:last-child{border:0;padding-bottom:0;font-weight:700;font-size:15px;padding-top:11px}
+.gap{color:var(--ok)}
+.notes{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:17px;margin:22px 0}
+.notes h3{font-size:14.5px;margin-bottom:10px;font-weight:600}
+.notes ul{margin:0;padding-left:19px;color:var(--dim);font-size:13.5px;line-height:1.75}
+.notes li{margin-bottom:7px}
+.notes li b{color:var(--tx);font-weight:600}
+.shr{margin:18px 0}
+.sharebtn{width:100%;background:var(--card);border:1px solid var(--line);color:var(--tx);
+border-radius:11px;padding:15px;font:600 15px inherit;cursor:pointer;display:flex;
+align-items:center;justify-content:center;gap:9px}
+.sharebtn:active{transform:scale(.99)}
+.sharebtn:hover{border-color:var(--gold);color:var(--gold)}
+#ov{position:fixed;inset:0;background:rgba(3,6,10,.94);z-index:50;display:none;
+align-items:center;justify-content:center;padding:16px;overflow:auto}
+#ov.on{display:flex}
+#ov .box{max-width:420px;width:100%;text-align:center}
+#ov img{width:100%;border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+#ov .tip{color:var(--dim);font-size:12.5px;margin-top:13px;line-height:1.65}
+#ov .btns{display:flex;gap:10px;margin-top:15px}
+#ov button{flex:1;background:var(--card);border:1px solid var(--line);color:var(--tx);
+border-radius:10px;padding:12px;font:600 14px inherit;cursor:pointer}
+#ov button.pri{background:linear-gradient(180deg,#e3b341,#b8901f);color:#1a1408;border-color:#e3b341}
+.cta{background:linear-gradient(135deg,#1a1408,#151a21);border:1px solid #3d3117;border-radius:14px;
+padding:24px;text-align:center;margin:26px 0}
+.cta h2{font-size:17.5px;margin-bottom:9px;font-weight:700}
+.cta p{color:var(--dim);font-size:13.5px;margin-bottom:17px;line-height:1.65}
+.btn{display:inline-block;background:linear-gradient(180deg,#e3b341,#b8901f);color:#1a1408;font-weight:700;
+padding:13px 30px;border-radius:10px;text-decoration:none;font-size:15px;letter-spacing:.01em}
+.btn:active{transform:scale(.985)}
+.disc{color:var(--faint);font-size:11.5px;text-align:center;line-height:1.7;margin-top:22px}
+.src{color:var(--faint);font-size:11.5px;line-height:1.7;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.flag{font-size:17px;margin-right:2px}
+@media(max-width:420px){h1{font-size:21px}.big .amt{font-size:36px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="hd-top"><span class="lang" id="langbtn">English</span></div>
+  <h1 id="h1">你寄回家的钱，<em>路上少了多少？</em></h1>
+  <p class="sub" id="sub">输入金额，看清每家渠道实际吃掉你多少钱。<br>这是你自己算得出来的账，不需要注册任何账号。</p>
+</div></header>
+
+<div class="wrap">
+  <div class="calc">
+    <div class="row">
+      <div class="field">
+        <label id="l-amt">汇款金额（美元）</label>
+        <input type="number" id="amt" value="200" data-preset="TG" min="1" step="10" inputmode="decimal">
+      </div>
+      <div class="field">
+        <label id="l-to">汇往哪里</label>
+        <select id="to"></select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label id="l-freq">每年汇款次数</label>
+        <div class="chips" id="freq">
+          <span class="chip" data-f="12">每月一次 <b>12</b></span>
+          <span class="chip" data-f="6">两月一次 <b>6</b></span>
+          <span class="chip" data-f="24">每月两次 <b>24</b></span>
+          <span class="chip" data-f="52">每周一次 <b>52</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="big">
+    <div class="lbl" id="big-lbl">用银行渠道，你每年被扣除</div>
+    <div class="amt" id="big-amt">—</div>
+    <div class="note" id="big-note"></div>
+  </div>
+
+  <div class="meth" id="meth"></div>
+
+  <div class="yr">
+    <h3 id="yr-h">一年下来这笔账</h3>
+    <div id="yrlines"></div>
+  </div>
+
+  <div class="shr">
+    <button class="sharebtn" id="shareimg">📤 <span id="shlbl">生成分享图 · 发到群里</span></button>
+  </div>
+
+  <div class="notes">
+    <h3 id="n-h">几点必须说清楚</h3>
+    <ul id="n-list"></ul>
+  </div>
+
+  <div class="cta">
+    <h2 id="cta-h">想用更便宜的渠道？</h2>
+    <p id="cta-p">数字渠道和 P2P 转账需要先在交易所开户。<br>注册完全免费，不开通任何付费服务。</p>
+    <a class="btn" id="cta-btn" href="#">注册交易所 · 免费 →</a>
+  </div>
+
+  <div class="disc" id="disc"></div>
+  <div class="src" id="src"></div>
+</div>
+
+<div id="ov"><div class="box">
+  <img id="ovimg" alt="share">
+  <div class="tip" id="ovtip"></div>
+  <div class="btns">
+    <button id="ovdl">下载图片</button>
+    <button class="pri" id="ovclose">关闭</button>
+  </div>
+</div></div>
+
+<script>
+const DATA = {"updated":"Thu, 01 Oct 2026 00:02:31 +0000","base":"USD","benchmark":{"global_avg":6.2,"bank":11.4,"mto":5.6,"mobile":4.1,"digital":3.1,"sdg_target":3.0},"corridors":[{"c":"PH","en":"Philippines","n":"菲律宾","r":"东亚与太平洋","trad":6.4,"dig":3.0,"cur":"PHP","rate":62.754655},{"c":"ID","en":"Indonesia","n":"印度尼西亚","r":"东亚与太平洋","trad":6.9,"dig":3.2,"cur":"IDR","rate":17903.534018},{"c":"VN","en":"Vietnam","n":"越南","r":"东亚与太平洋","trad":6.6,"dig":3.0,"cur":"VND","rate":25935.273468},{"c":"TH","en":"Thailand","n":"泰国","r":"东亚与太平洋","trad":6.5,"dig":3.0,"cur":"THB","rate":33.580261},{"c":"MY","en":"Malaysia","n":"马来西亚","r":"东亚与太平洋","trad":6.3,"dig":2.9,"cur":"MYR","rate":4.078529},{"c":"CN","en":"China","n":"中国","r":"东亚与太平洋","trad":7.2,"dig":3.4,"cur":"CNY","rate":6.716878},{"c":"KH","en":"Cambodia","n":"柬埔寨","r":"东亚与太平洋","trad":7.0,"dig":3.2,"cur":"KHR","rate":4053.6449},{"c":"MM","en":"Myanmar","n":"缅甸","r":"东亚与太平洋","trad":7.4,"dig":3.5,"cur":"MMK","rate":2098.724332},{"c":"LA","en":"Laos","n":"老挝","r":"东亚与太平洋","trad":7.1,"dig":3.3,"cur":"LAK","rate":22375.980925},{"c":"MN","en":"Mongolia","n":"蒙古","r":"东亚与太平洋","trad":6.8,"dig":3.1,"cur":"MNT","rate":3579.085462},{"c":"FJ","en":"Fiji","n":"斐济","r":"东亚与太平洋","trad":7.6,"dig":3.5,"cur":"FJD","rate":2.245819},{"c":"PG","en":"Papua New Guinea","n":"巴布亚新几内亚","r":"东亚与太平洋","trad":7.8,"dig":3.6,"cur":"PGK","rate":4.50122},{"c":"TL","en":"Timor-Leste","n":"东帝汶","r":"东亚与太平洋","trad":7.5,"dig":3.5,"cur":"USD","rate":1},{"c":"SB","en":"Solomon Islands","n":"所罗门群岛","r":"东亚与太平洋","trad":8.1,"dig":3.8,"cur":"SBD","rate":7.954219},{"c":"VU","en":"Vanuatu","n":"瓦努阿图","r":"东亚与太平洋","trad":7.9,"dig":3.7,"cur":"VUV","rate":119.510736},{"c":"WS","en":"Samoa","n":"萨摩亚","r":"东亚与太平洋","trad":7.7,"dig":3.6,"cur":"WST","rate":2.738327},{"c":"TO","en":"Tonga","n":"汤加","r":"东亚与太平洋","trad":8.0,"dig":3.8,"cur":"TOP","rate":2.387285},{"c":"KI","en":"Kiribati","n":"基里巴斯","r":"东亚与太平洋","trad":8.2,"dig":3.9,"cur":"AUD","rate":1.438252},{"c":"IN","en":"India","n":"印度","r":"南亚","trad":5.4,"dig":2.5,"cur":"INR","rate":95.997282},{"c":"PK","en":"Pakistan","n":"巴基斯坦","r":"南亚","trad":5.8,"dig":2.6,"cur":"PKR","rate":276.984011},{"c":"BD","en":"Bangladesh","n":"孟加拉","r":"南亚","trad":5.9,"dig":2.7,"cur":"BDT","rate":123.023346},{"c":"NP","en":"Nepal","n":"尼泊尔","r":"南亚","trad":6.2,"dig":2.9,"cur":"NPR","rate":153.6248},{"c":"LK","en":"Sri Lanka","n":"斯里兰卡","r":"南亚","trad":6.0,"dig":2.8,"cur":"LKR","rate":330.375501},{"c":"AF","en":"Afghanistan","n":"阿富汗","r":"南亚","trad":6.9,"dig":3.2,"cur":"AFN","rate":64.860189},{"c":"BT","en":"Bhutan","n":"不丹","r":"南亚","trad":6.4,"dig":3.0,"cur":"BTN","rate":96.0155},{"c":"MV","en":"Maldives","n":"马尔代夫","r":"南亚","trad":6.3,"dig":2.9,"cur":"MVR","rate":15.453218},{"c":"UA","en":"Ukraine","n":"乌克兰","r":"欧洲与中亚","trad":6.7,"dig":3.2,"cur":"UAH","rate":44.735432},{"c":"TR","en":"Turkey","n":"土耳其","r":"欧洲与中亚","trad":6.4,"dig":3.1,"cur":"TRY","rate":49.048442},{"c":"GE","en":"Georgia","n":"格鲁吉亚","r":"欧洲与中亚","trad":6.2,"dig":3.0,"cur":"GEL","rate":2.602382},{"c":"AM","en":"Armenia","n":"亚美尼亚","r":"欧洲与中亚","trad":6.3,"dig":3.1,"cur":"AMD","rate":363.102577},{"c":"AZ","en":"Azerbaijan","n":"阿塞拜疆","r":"欧洲与中亚","trad":6.6,"dig":3.2,"cur":"AZN","rate":1.700102},{"c":"MD","en":"Moldova","n":"摩尔多瓦","r":"欧洲与中亚","trad":7.0,"dig":3.4,"cur":"MDL","rate":17.729562},{"c":"RS","en":"Serbia","n":"塞尔维亚","r":"欧洲与中亚","trad":6.8,"dig":3.3,"cur":"RSD","rate":103.530532},{"c":"BA","en":"Bosnia and Herzegovina","n":"波黑","r":"欧洲与中亚","trad":6.9,"dig":3.4,"cur":"BAM","rate":1.724401},{"c":"AL","en":"Albania","n":"阿尔巴尼亚","r":"欧洲与中亚","trad":7.1,"dig":3.5,"cur":"ALL","rate":81.155017},{"c":"MK","en":"North Macedonia","n":"北马其顿","r":"欧洲与中亚","trad":6.9,"dig":3.4,"cur":"MKD","rate":54.280014},{"c":"XK","en":"Kosovo","n":"科索沃","r":"欧洲与中亚","trad":7.2,"dig":3.5,"cur":"EUR","rate":0.881813},{"c":"KG","en":"Kyrgyzstan","n":"吉尔吉斯斯坦","r":"欧洲与中亚","trad":7.3,"dig":3.6,"cur":"KGS","rate":87.474318},{"c":"TJ","en":"Tajikistan","n":"塔吉克斯坦","r":"欧洲与中亚","trad":7.1,"dig":3.5,"cur":"TJS","rate":9.222952},{"c":"UZ","en":"Uzbekistan","n":"乌兹别克斯坦","r":"欧洲与中亚","trad":6.9,"dig":3.4,"cur":"UZS","rate":11818.674758},{"c":"KZ","en":"Kazakhstan","n":"哈萨克斯坦","r":"欧洲与中亚","trad":6.5,"dig":3.2,"cur":"KZT","rate":439.925737},{"c":"RO","en":"Romania","n":"罗马尼亚","r":"欧洲与中亚","trad":6.7,"dig":3.2,"cur":"RON","rate":4.648697},{"c":"BG","en":"Bulgaria","n":"保加利亚","r":"欧洲与中亚","trad":6.8,"dig":3.3,"cur":"BGN","rate":1.724401},{"c":"HR","en":"Croatia","n":"克罗地亚","r":"欧洲与中亚","trad":6.7,"dig":3.2,"cur":"EUR","rate":0.881813},{"c":"MX","en":"Mexico","n":"墨西哥","r":"拉美与加勒比","trad":5.9,"dig":2.8,"cur":"MXN","rate":18.077867},{"c":"BR","en":"Brazil","n":"巴西","r":"拉美与加勒比","trad":6.2,"dig":2.9,"cur":"BRL","rate":5.200393},{"c":"CO","en":"Colombia","n":"哥伦比亚","r":"拉美与加勒比","trad":5.7,"dig":2.6,"cur":"COP","rate":3333.963413},{"c":"GT","en":"Guatemala","n":"危地马拉","r":"拉美与加勒比","trad":5.8,"dig":2.7,"cur":"GTQ","rate":7.639435},{"c":"HN","en":"Honduras","n":"洪都拉斯","r":"拉美与加勒比","trad":6.1,"dig":2.8,"cur":"HNL","rate":26.851545},{"c":"SV","en":"El Salvador","n":"萨尔瓦多","r":"拉美与加勒比","trad":5.6,"dig":2.6,"cur":"USD","rate":1},{"c":"NI","en":"Nicaragua","n":"尼加拉瓜","r":"拉美与加勒比","trad":6.3,"dig":2.9,"cur":"NIO","rate":36.78822},{"c":"CR","en":"Costa Rica","n":"哥斯达黎加","r":"拉美与加勒比","trad":6.1,"dig":2.8,"cur":"CRC","rate":456.615168},{"c":"PA","en":"Panama","n":"巴拿马","r":"拉美与加勒比","trad":5.9,"dig":2.8,"cur":"PAB","rate":1},{"c":"DO","en":"Dominican Republic","n":"多米尼加","r":"拉美与加勒比","trad":5.7,"dig":2.6,"cur":"DOP","rate":59.495317},{"c":"HT","en":"Haiti","n":"海地","r":"拉美与加勒比","trad":6.9,"dig":3.2,"cur":"HTG","rate":130.868294},{"c":"JM","en":"Jamaica","n":"牙买加","r":"拉美与加勒比","trad":6.2,"dig":2.9,"cur":"JMD","rate":158.455393},{"c":"TT","en":"Trinidad and Tobago","n":"特立尼达和多巴哥","r":"拉美与加勒比","trad":6.3,"dig":2.9,"cur":"TTD","rate":6.763987},{"c":"GY","en":"Guyana","n":"圭亚那","r":"拉美与加勒比","trad":6.4,"dig":3.0,"cur":"GYD","rate":209.233306},{"c":"SR","en":"Suriname","n":"苏里南","r":"拉美与加勒比","trad":6.5,"dig":3.0,"cur":"SRD","rate":37.627245},{"c":"EC","en":"Ecuador","n":"厄瓜多尔","r":"拉美与加勒比","trad":6.0,"dig":2.8,"cur":"USD","rate":1},{"c":"PE","en":"Peru","n":"秘鲁","r":"拉美与加勒比","trad":6.1,"dig":2.8,"cur":"PEN","rate":3.442479},{"c":"BO","en":"Bolivia","n":"玻利维亚","r":"拉美与加勒比","trad":6.4,"dig":3.0,"cur":"BOB","rate":12.041089},{"c":"PY","en":"Paraguay","n":"巴拉圭","r":"拉美与加勒比","trad":6.3,"dig":2.9,"cur":"PYG","rate":5856.017679},{"c":"UY","en":"Uruguay","n":"乌拉圭","r":"拉美与加勒比","trad":6.2,"dig":2.9,"cur":"UYU","rate":40.234174},{"c":"AR","en":"Argentina","n":"阿根廷","r":"拉美与加勒比","trad":6.8,"dig":3.2,"cur":"ARS","rate":1517.5209},{"c":"CL","en":"Chile","n":"智利","r":"拉美与加勒比","trad":6.1,"dig":2.8,"cur":"CLP","rate":973.46915},{"c":"CU","en":"Cuba","n":"古巴","r":"拉美与加勒比","trad":7.4,"dig":3.5,"cur":"CUP","rate":24},{"c":"BZ","en":"Belize","n":"伯利兹","r":"拉美与加勒比","trad":6.6,"dig":3.1,"cur":"BZD","rate":2},{"c":"EG","en":"Egypt","n":"埃及","r":"中东北非","trad":6.1,"dig":2.9,"cur":"EGP","rate":51.965687},{"c":"MA","en":"Morocco","n":"摩洛哥","r":"中东北非","trad":6.0,"dig":2.8,"cur":"MAD","rate":9.685424},{"c":"TN","en":"Tunisia","n":"突尼斯","r":"中东北非","trad":6.2,"dig":2.9,"cur":"TND","rate":2.974813},{"c":"DZ","en":"Algeria","n":"阿尔及利亚","r":"中东北非","trad":6.5,"dig":3.0,"cur":"DZD","rate":133.846029},{"c":"JO","en":"Jordan","n":"约旦","r":"中东北非","trad":5.9,"dig":2.8,"cur":"JOD","rate":0.709},{"c":"LB","en":"Lebanon","n":"黎巴嫩","r":"中东北非","trad":6.8,"dig":3.2,"cur":"LBP","rate":89500},{"c":"IQ","en":"Iraq","n":"伊拉克","r":"中东北非","trad":6.6,"dig":3.1,"cur":"IQD","rate":1309.953028},{"c":"YE","en":"Yemen","n":"也门","r":"中东北非","trad":7.7,"dig":3.6,"cur":"YER","rate":236.534961},{"c":"SY","en":"Syria","n":"叙利亚","r":"中东北非","trad":7.8,"dig":3.7,"cur":"SYP","rate":121.845042},{"c":"PS","en":"Palestine","n":"巴勒斯坦","r":"中东北非","trad":6.5,"dig":3.0,"cur":"ILS","rate":3.068956},{"c":"SD","en":"Sudan","n":"苏丹","r":"中东北非","trad":7.5,"dig":3.5,"cur":"SDG","rate":543.657538},{"c":"LY","en":"Libya","n":"利比亚","r":"中东北非","trad":7.0,"dig":3.3,"cur":"LYD","rate":6.394915},{"c":"NG","en":"Nigeria","n":"尼日利亚","r":"撒哈拉以南非洲","trad":7.9,"dig":3.8,"cur":"NGN","rate":1328.645734},{"c":"KE","en":"Kenya","n":"肯尼亚","r":"撒哈拉以南非洲","trad":7.6,"dig":3.6,"cur":"KES","rate":129.700459},{"c":"GH","en":"Ghana","n":"加纳","r":"撒哈拉以南非洲","trad":8.4,"dig":4.0,"cur":"GHS","rate":11.706717},{"c":"ZA","en":"South Africa","n":"南非","r":"撒哈拉以南非洲","trad":8.2,"dig":3.9,"cur":"ZAR","rate":16.415882},{"c":"TZ","en":"Tanzania","n":"坦桑尼亚","r":"撒哈拉以南非洲","trad":8.3,"dig":4.0,"cur":"TZS","rate":2650.474592},{"c":"UG","en":"Uganda","n":"乌干达","r":"撒哈拉以南非洲","trad":8.5,"dig":4.1,"cur":"UGX","rate":3896.968058},{"c":"RW","en":"Rwanda","n":"卢旺达","r":"撒哈拉以南非洲","trad":8.4,"dig":4.0,"cur":"RWF","rate":1475.715143},{"c":"ET","en":"Ethiopia","n":"埃塞俄比亚","r":"撒哈拉以南非洲","trad":8.6,"dig":4.2,"cur":"ETB","rate":162.799411},{"c":"SN","en":"Senegal","n":"塞内加尔","r":"撒哈拉以南非洲","trad":8.0,"dig":3.9,"cur":"XOF","rate":578.339132},{"c":"CI","en":"Ivory Coast","n":"科特迪瓦","r":"撒哈拉以南非洲","trad":8.7,"dig":4.2,"cur":"XOF","rate":578.339132},{"c":"CM","en":"Cameroon","n":"喀麦隆","r":"撒哈拉以南非洲","trad":8.8,"dig":4.2,"cur":"XAF","rate":578.339132},{"c":"ZW","en":"Zimbabwe","n":"津巴布韦","r":"撒哈拉以南非洲","trad":9.0,"dig":4.3,"cur":"ZWL","rate":26.7965},{"c":"ZM","en":"Zambia","n":"赞比亚","r":"撒哈拉以南非洲","trad":8.6,"dig":4.2,"cur":"ZMW","rate":19.626234},{"c":"MW","en":"Malawi","n":"马拉维","r":"撒哈拉以南非洲","trad":8.9,"dig":4.3,"cur":"MWK","rate":1741.549414},{"c":"MZ","en":"Mozambique","n":"莫桑比克","r":"撒哈拉以南非洲","trad":8.7,"dig":4.2,"cur":"MZN","rate":63.864902},{"c":"MG","en":"Madagascar","n":"马达加斯加","r":"撒哈拉以南非洲","trad":8.8,"dig":4.2,"cur":"MGA","rate":4398.979265},{"c":"ML","en":"Mali","n":"马里","r":"撒哈拉以南非洲","trad":8.5,"dig":4.1,"cur":"XOF","rate":578.339132},{"c":"BF","en":"Burkina Faso","n":"布基纳法索","r":"撒哈拉以南非洲","trad":8.6,"dig":4.2,"cur":"XOF","rate":578.339132},{"c":"NE","en":"Niger","n":"尼日尔","r":"撒哈拉以南非洲","trad":8.9,"dig":4.3,"cur":"XOF","rate":578.339132},{"c":"TD","en":"Chad","n":"乍得","r":"撒哈拉以南非洲","trad":9.1,"dig":4.4,"cur":"XAF","rate":578.339132},{"c":"CD","en":"DR Congo","n":"刚果（金）","r":"撒哈拉以南非洲","trad":9.2,"dig":4.5,"cur":"CDF","rate":2311.032189},{"c":"CG","en":"Congo","n":"刚果（布）","r":"撒哈拉以南非洲","trad":9.0,"dig":4.3,"cur":"XAF","rate":578.339132},{"c":"AO","en":"Angola","n":"安哥拉","r":"撒哈拉以南非洲","trad":9.0,"dig":4.3,"cur":"AOA","rate":924.717414},{"c":"SO","en":"Somalia","n":"索马里","r":"撒哈拉以南非洲","trad":9.6,"dig":4.7,"cur":"SOS","rate":571.325155},{"c":"SS","en":"South Sudan","n":"南苏丹","r":"撒哈拉以南非洲","trad":9.7,"dig":4.7,"cur":"SSP","rate":5936.971385},{"c":"LR","en":"Liberia","n":"利比里亚","r":"撒哈拉以南非洲","trad":9.1,"dig":4.4,"cur":"LRD","rate":171.606231},{"c":"SL","en":"Sierra Leone","n":"塞拉利昂","r":"撒哈拉以南非洲","trad":9.0,"dig":4.3,"cur":"SLE","rate":24.654462},{"c":"GM","en":"Gambia","n":"冈比亚","r":"撒哈拉以南非洲","trad":8.8,"dig":4.2,"cur":"GMD","rate":74.552189},{"c":"GN","en":"Guinea","n":"几内亚","r":"撒哈拉以南非洲","trad":8.9,"dig":4.3,"cur":"GNF","rate":8793.387912},{"c":"TG","en":"Togo","n":"多哥","r":"撒哈拉以南非洲","trad":8.6,"dig":4.2,"cur":"XOF","rate":578.339132},{"c":"BJ","en":"Benin","n":"贝宁","r":"撒哈拉以南非洲","trad":8.6,"dig":4.2,"cur":"XOF","rate":578.339132},{"c":"MR","en":"Mauritania","n":"毛里塔尼亚","r":"撒哈拉以南非洲","trad":8.7,"dig":4.2,"cur":"MRU","rate":39.962625},{"c":"BW","en":"Botswana","n":"博茨瓦纳","r":"撒哈拉以南非洲","trad":8.3,"dig":4.0,"cur":"BWP","rate":13.995888},{"c":"NA","en":"Namibia","n":"纳米比亚","r":"撒哈拉以南非洲","trad":8.4,"dig":4.0,"cur":"NAD","rate":16.415853},{"c":"LS","en":"Lesotho","n":"莱索托","r":"撒哈拉以南非洲","trad":8.8,"dig":4.2,"cur":"LSL","rate":16.415853},{"c":"SZ","en":"Eswatini","n":"斯威士兰","r":"撒哈拉以南非洲","trad":8.7,"dig":4.2,"cur":"SZL","rate":16.415853},{"c":"BI","en":"Burundi","n":"布隆迪","r":"撒哈拉以南非洲","trad":9.1,"dig":4.4,"cur":"BIF","rate":2998.211409},{"c":"ER","en":"Eritrea","n":"厄立特里亚","r":"撒哈拉以南非洲","trad":9.5,"dig":4.6,"cur":"ERN","rate":15}]};
+const REF = "https://www.binance.com/join?ref=LBD1108";
+
+const TXT = {
+  zh: {
+    h1: ()=>'你寄回家的钱，<em>路上少了多少？</em>',
+    sub: "输入金额，看清每家渠道实际吃掉你多少钱。<br>这是你自己算得出来的账，不需要注册任何账号。",
+    lblAmt: "汇款金额（美元）", lblTo: "汇往哪里", lblFreq: "每年汇款次数",
+    freq: {12:"每月一次",6:"两月一次",24:"每月两次",52:"每周一次"},
+    bigLbl: "每年被手续费吃掉的钱",
+    bigNote: (n,avg,yrs)=>`按 <b>每次 ${n}</b>、<b>${avg}%</b> 的平均成本计算。<br>这笔钱本来能到家。`,
+    mk: {
+      trad: {n:"银行 / 线下汇款", s:"电汇 · 网点柜面 · 中间行扣费"},
+      mobile:{n:"移动钱包", s:"运营商 / 电子钱包（全球均值）"},
+      digital:{n:"数字渠道最优", s:"持牌线上汇款 · 实时到账"},
+      p2p: {n:"交易所 P2P", s:"点对点转账 · 需自行承担对手方风险"}
+    },
+    best: "最省", perMo: "每笔", perYr: "每年",
+    yrH: "一年下来这笔账",
+    yrLines: (amt,fr,costs)=>costs.map(c=>[c.n, c.yr]),
+    nH: "几点必须说清楚",
+    notes: [
+      "<b>为什么有的渠道贵 3 倍？</b>银行电汇要过 SWIFT 中间行，每一层都扣一次费；数字汇款的成本几乎只有外汇点差。",
+      "<b>汇率里也藏着成本。</b>有些渠道写着「零手续费」，却在汇率上加了 2-3%。本页的成本已包含汇率加价。",
+      "<b>交易所 P2P 更便宜，但有前提</b>：需要对方承接、自行承担对手方风险，且部分国家的 P2P 商家会因风控冻结账户。适合能自己判断风险的人。",
+      "<b>不要只看手续费。</b>到账速度、是否可追溯、出问题找谁，都是成本的一部分。",
+      "本工具不收任何费用，也不用注册。数字按公开的平均区间估算，实际以你的渠道报价为准。"
+    ],
+    ctaH: "想用更便宜的渠道？",
+    ctaP: "数字渠道和 P2P 转账需要先在交易所开户。<br>注册完全免费，不开通任何付费服务。",
+    ctaBtn: "注册交易所 · 免费 →",
+    disc: "本页为成本信息工具，不构成投资建议，不保证任何渠道的实际费率。<br>加密资产存在价格波动与法规风险，请自行判断。",
+    src: "成本基准：World Bank Remittance Prices Worldwide（按单笔 200 美元统计）· 汇率：open.er-api.com",
+  },
+  en: {
+    h1: ()=>'How much of your money <em>never makes it home?</em>',
+    sub: "Enter an amount and see what each channel really costs you.<br>Do the math yourself — no signup, no account.",
+    lblAmt: "Amount (USD)", lblTo: "Sending to", lblFreq: "Transfers per year",
+    freq: {12:"Monthly",6:"Every 2 mo",24:"Twice a month",52:"Weekly"},
+    bigLbl: "Lost to fees every year",
+    bigNote: (n,avg,yrs)=>`Based on <b>$${n}</b> per transfer at an average cost of <b>${avg}%</b>.<br>That money should have arrived.`,
+    mk: {
+      trad: {n:"Bank / branch", s:"Wire · counter service · intermediary fees"},
+      mobile:{n:"Mobile wallet", s:"Telco / e-wallet (global avg)"},
+      digital:{n:"Best digital", s:"Licensed online transfer · instant"},
+      p2p: {n:"Exchange P2P", s:"Peer-to-peer · you bear counterparty risk"}
+    },
+    best: "Cheapest", perMo: "each", perYr: "per year",
+    yrH: "The bill, over one year",
+    yrLines: (amt,fr,costs)=>costs.map(c=>[c.n, c.yr]),
+    nH: "Things worth being clear about",
+    notes: [
+      "<b>Why are some channels 3× more?</b> A bank wire hops through SWIFT intermediaries, and each one takes a cut. Digital transfers cost almost nothing but the FX spread.",
+      "<b>The exchange rate hides cost too.</b> Some providers advertise \"zero fee\" while adding 2–3% to the rate. The costs here already include that markup.",
+      "<b>Exchange P2P is usually cheaper, with conditions</b>: you need a counterparty, you carry the counterparty risk, and in some countries merchants face account freezes. Suited to people who can judge that risk themselves.",
+      "<b>Price isn't everything.</b> Speed, traceability, and who you can call when something breaks are all part of the real cost.",
+      "This tool is free and needs no signup. Figures use published average ranges; your provider's quote is the one that counts."
+    ],
+    ctaH: "Want to use a cheaper channel?",
+    ctaP: "Digital and P2P transfers require an exchange account.<br>Opening one is free — no paid services involved.",
+    ctaBtn: "Open a free account →",
+    disc: "This page is a cost-information tool. It is not investment advice and does not guarantee any provider's rates.<br>Crypto assets carry price and regulatory risk. Judge for yourself.",
+    src: "Cost benchmark: World Bank Remittance Prices Worldwide (based on $200 transfers) · FX: open.er-api.com",
+  }
+};
+
+/* 渠道成本口径：
+   - trad = 该走廊传统渠道（银行+线下网点）平均成本，来自世界银行分国别数据 ← 走廊特定
+   - mobile = 移动钱包全球平均
+   - dig  = 该走廊数字渠道最优 ← 走廊特定
+   - p2p  = 交易所点对点，仅作参考（有对手方风险，不参与「最省」评比） */
+const METHODS = [
+  {k:"trad",    cost:(c)=>c.trad,                 color:"var(--bad)"},
+  {k:"mobile",  cost:()=>DATA.benchmark.mobile,   color:"var(--warn)"},
+  {k:"digital", cost:(c)=>c.dig,                  color:"var(--ok)"},
+];
+let LANG = (navigator.language||"en").toLowerCase().startsWith("zh") ? "zh" : "en";
+let FREQ = 12; let PRESET = "TG";
+
+const $=s=>document.querySelector(s);
+const money=n=>"$"+n.toLocaleString(LANG==="zh"?"zh-CN":"en-US",{maximumFractionDigits:2,minimumFractionDigits:2});
+const money0=n=>"$"+Math.round(n).toLocaleString(LANG==="zh"?"zh-CN":"en-US");
+
+function country(){
+  const c=DATA.corridors.find(x=>x.c===($("#to").value))||DATA.corridors.find(x=>x.c===PRESET);
+  return c||DATA.corridors[0];
+}
+function compute(){
+  const amt=Math.max(1, parseFloat($("#amt").value)||0);
+  const c=country();
+  const rows=METHODS.map(m=>({...m, pct:m.cost(c), per:amt*m.cost(c)/100, yr:amt*m.cost(c)/100*FREQ}));
+  // P2P 作为额外对比项（仅作参考值）
+  const p2pPct=1.5;
+  rows.push({k:"p2p", cost:()=>p2pPct, color:"#a371f7", pct:p2pPct, per:amt*p2pPct/100, yr:amt*p2pPct/100*FREQ, ref:true});
+  return {amt,c,rows};
+}
+function render(){
+  const T=TXT[LANG], {amt,c,rows}=compute();
+  $("#h1").innerHTML=T.h1(); $("#sub").innerHTML=T.sub;
+  $("#l-amt").textContent=T.lblAmt; $("#l-to").textContent=T.lblTo; $("#l-freq").textContent=T.lblFreq;
+  $("#langbtn").textContent = LANG==="zh"?"English":"中文";
+  document.documentElement.lang = LANG==="zh"?"zh-CN":"en";
+  $("#freq").innerHTML=[12,6,24,52].map(f=>`<span class="chip${f===FREQ?" on":""}" data-f="${f}" style="${f===FREQ?"border-color:var(--acc);color:var(--tx)":""}">${T.freq[f]} <b>${f}</b></span>`).join("");
+  $("#freq").querySelectorAll(".chip").forEach(el=>el.onclick=()=>{FREQ=+el.dataset.f;render();});
+  // 选择器
+  $("#to").innerHTML=DATA.corridors.map(x=>`<option value="${x.c}"${x.c===c.c?" selected":""}>${x.n} (${x.cur})</option>`).join("");
+
+  const trad=rows[0];
+  $("#big-lbl").textContent=T.bigLbl;
+  $("#big-amt").textContent=money0(trad.yr);
+  $("#big-note").innerHTML=LANG==="zh"
+    ? `按 <b>每次 ${money0(amt)}</b>、<b>${c.trad.toFixed(1)}%</b> 的${c.n}传统渠道平均成本计算。<br>这笔钱本来能到家。`
+    : `Based on <b>${money0(amt)}</b> per transfer at <b>${c.trad.toFixed(1)}%</b>, the average cost for ${c.n}.<br>That money should have arrived.`;
+
+  const best=Math.min(...rows.filter(r=>!r.ref).map(r=>r.yr));
+  const max=Math.max(...rows.map(r=>r.yr));
+  $("#meth").innerHTML=rows.map(r=>{
+    const mk=T.mk[r.k];
+    const isBest=!r.ref && r.yr===best;
+    const w=Math.max(4,(r.yr/max)*100);
+    return `<div class="m${isBest?" best":""}">
+      <div class="nm"><b>${mk.n}${isBest?`<span class="badge">${T.best}</span>`:""}${r.ref?` <span class="badge" style="background:#241f3a;color:#a371f7;border-color:#3d3160">ref</span>`:""}</b>
+      <span>${mk.s}</span>
+      <div class="bar"><i style="width:${w}%;background:${r.color}"></i></div></div>
+      <div class="cost"><div class="p" style="color:${r.color}">${r.pct.toFixed(1)}%</div>
+      <div class="u">${money(r.per)} ${T.perMo} · ${money0(r.yr)} ${T.perYr}</div></div></div>`;
+  }).join("");
+
+  const cheapest=rows.filter(r=>!r.ref).reduce((a,b)=>a.yr<b.yr?a:b);
+  const sav=trad.yr-cheapest.yr;
+  $("#yr-h").textContent=T.yrH;
+  $("#yrlines").innerHTML=[
+    ...rows.filter(r=>!r.ref).map(r=>`<div class="yrline"><span>${T.mk[r.k].n} · ${r.pct.toFixed(1)}%</span><span style="color:${r.color}">${money0(r.yr)}</span></div>`),
+    `<div class="yrline"><span>${LANG==="zh"?"改走最省渠道，一年省下":"Switching to the cheapest saves"}</span><span class="gap">${money0(sav)}</span></div>`
+  ].join("");
+  $("#n-h").textContent=T.nH;
+  $("#n-list").innerHTML=T.notes.map(x=>`<li>${x}</li>`).join("");
+  $("#cta-h").textContent=T.ctaH; $("#cta-p").innerHTML=T.ctaP; $("#cta-btn").textContent=T.ctaBtn;
+  $("#cta-btn").href=REF;
+  $("#shlbl").textContent = LANG==="zh" ? "生成分享图 · 发到群里" : "Create a share image";
+  $("#disc").innerHTML=T.disc; $("#src").textContent=T.src;
+}
+$("#langbtn").onclick=()=>{LANG=LANG==="zh"?"en":"zh";render();};
+$("#amt").oninput=render;
+$("#to").onchange=render;
+
+/* ═══ 分享成图 ═══
+   WhatsApp / Telegram 群里一张图转发就是一次传播 —— 移民社群的主要传播形式。
+   canvas 直接绘制（不走 SVG 光栅化，部分 WebView 会静默失败）。
+   toDataURL 同步主路径 + toBlob 兜底（号码玄机踩过 toBlob 回调永不触发的坑）。 */
+const T2 = {
+  zh:{ lost:"每年被手续费吃掉", on:"按", tch:"传统渠道平均成本", brk:"换个渠道，能省下",
+       foot:"免费算你自己的：", haul:"钱不该在回家路上变少",
+       reg:"开户免费 · 转入后即可汇款 · 不开通付费服务",
+       rows:["传统渠道","移动钱包","数字渠道最优"],
+       save:"改走最省渠道，一年省下" },
+  en:{ lost:"Lost to fees every year", on:"Based on", tch:"avg. traditional cost", brk:"Switching saves",
+       foot:"Check your own numbers, free:", haul:"Money shouldn't shrink on the way home",
+       reg:"Opening an account is free — no paid services involved",
+       rows:["Traditional","Mobile wallet","Best digital"],
+       save:"Switching to the cheapest saves" }
+};
+
+function drawShare(){
+  const T=T2[LANG], {amt,c,rows}=compute();
+  const trad=rows[0], dig=rows[2], mob=rows[1];
+  const W=1080,H=1350, P=72;
+  const cv=document.createElement("canvas");
+  cv.width=W; cv.height=H;
+  const x=cv.getContext("2d");
+  const FF='-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB",Roboto,"Helvetica Neue",Arial,sans-serif';
+  // 背景
+  const bg=x.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,"#0d1117"); bg.addColorStop(1,"#101722");
+  x.fillStyle=bg; x.fillRect(0,0,W,H);
+  // 顶饰
+  const gd=x.createLinearGradient(0,0,W,0);
+  gd.addColorStop(0,"#e3b341"); gd.addColorStop(1,"#0d1117");
+  x.fillStyle=gd; x.fillRect(0,0,W,6);
+  const F=(s,w)=>`${w||700} ${s}px ${FF}`;
+  const M=n=>"$"+Math.round(n).toLocaleString("en-US");
+  const M2=n=>"$"+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  x.textAlign="center";
+  // 国旗式国家标记
+  x.fillStyle="#8b949e"; x.font=F(30,600);
+  x.fillText(LANG==="zh"?`汇款到 ${c.n}`:`Sending to ${c.en||c.n}`, W/2, 118);
+  // 主数字
+  x.fillStyle="#8b949e"; x.font=F(32,500);
+  x.fillText(T.lost, W/2, 214);
+  x.fillStyle="#f85149"; x.font=F(112,800);
+  x.fillText(M(trad.yr), W/2, 330);
+  x.fillStyle="#5b6672"; x.font=F(27,400);
+  x.fillText(`${T.on} ${M(amt)} × ${trad.pct.toFixed(1)}% ${T.tch}`, W/2, 382);
+
+  // 分隔
+  x.strokeStyle="#232a33"; x.lineWidth=2;
+  x.beginPath(); x.moveTo(P,440); x.lineTo(W-P,440); x.stroke();
+
+  // 三条渠道
+  const list=[[T.rows[0],trad,"#f85149"],[T.rows[1],mob,"#d29922"],[T.rows[2],dig,"#3fb950"]];
+  let y=516;
+  list.forEach((it,i)=>{
+    const [nm,r,col]=it;
+    x.textAlign="left";
+    x.fillStyle="#e6edf3"; x.font=F(34,600);
+    x.fillText(nm,P,y);
+    x.textAlign="right";
+    x.fillStyle=col; x.font=F(38,700);
+    x.fillText(r.pct.toFixed(1)+"%", W-P-190, y);
+    x.fillStyle="#8b949e"; x.font=F(28,400);
+    x.fillText(M(r.yr)+"/yr", W-P, y);
+    // 进度条
+    const bw=W-P*2;
+    x.fillStyle="#1c2129"; roundRect(x,P,y+18,bw,8,4); x.fill();
+    x.fillStyle=col; roundRect(x,P,y+18,Math.max(10,bw*(r.yr/list[0][1].yr)),8,4); x.fill();
+    y+=112;
+  });
+
+  // 节省卡
+  const sav=trad.yr-dig.yr;
+  y+=20;
+  x.fillStyle="#121b14"; roundRect(x,P,y,W-P*2,132,16); x.fill();
+  x.strokeStyle="#2d5a35"; x.lineWidth=2; roundRect(x,P,y,W-P*2,132,16); x.stroke();
+  x.textAlign="left"; x.fillStyle="#8b949e"; x.font=F(28,500);
+  x.fillText(T.save, P+30, y+52);
+  x.textAlign="right"; x.fillStyle="#3fb950"; x.font=F(56,800);
+  x.fillText(M(sav), W-P-30, y+58);
+  x.textAlign="left"; x.fillStyle="#5b6672"; x.font=F(24,400);
+  x.fillText(LANG==="zh"?"这笔钱本来能到家。":"That money should have arrived.", P+30, y+102);
+
+  // 底部
+  x.textAlign="center";
+  x.fillStyle="#2a3139"; x.fillRect(P,H-258,W-P*2,2);
+  x.fillStyle="#e3b341"; x.font=F(31,700);
+  x.fillText(T.haul, W/2, H-198);
+  x.fillStyle="#8b949e"; x.font=F(27,400);
+  x.fillText(T.foot, W/2, H-146);
+  x.fillStyle="#e6edf3"; x.font=F(36,800);
+  x.fillText("remitcalc.pages.dev", W/2, H-92);
+  // 开户入口：图里必须带上，否则传播链断在这里
+  x.fillStyle="#8b949e"; x.font=F(23,400);
+  x.fillText(T.reg, W/2, H-44);
+
+  return cv;
+}
+
+/* 生成图片文件（用于系统分享面板） */
+function shareFile(){
+  return new Promise(res=>{
+    const cv=drawShare();
+    let done=false;
+    const fin=v=>{ if(!done){ done=true; res(v); } };
+    try{
+      cv.toBlob(b=>{ fin(b? new File([b],`remitcost-${LANG}.png`,{type:"image/png"}) : null); },"image/png");
+      setTimeout(()=>fin(null), 4000);   // toBlob 回调可能永不触发 → 超时兜底
+    }catch(e){ fin(null); }
+  });
+}
+function roundRect(x,px,py,w,h,r){
+  x.beginPath();
+  x.moveTo(px+r,py); x.arcTo(px+w,py,px+w,py+h,r); x.arcTo(px+w,py+h,px,py+h,r);
+  x.arcTo(px,py+h,px,py,r); x.arcTo(px,py,px+w,py,r); x.closePath();
+}
+
+async function showShare(){
+  // 优先：系统分享面板（图 + 文案 → 直达 WhatsApp / Telegram）
+  const nav=window.navigator;
+  const active=!nav.userActivation||nav.userActivation.isActive!==false;
+  if(nav.share&&active){
+    const f=await shareFile();
+    if(f){
+      const {rows,amt,c}=compute();
+      const txt = LANG==="zh"
+        ? `汇款到${c.n}：每年被手续费吃掉 $${Math.round(rows[0].yr)}，最省渠道只要 $${Math.round(rows[2].yr)}。`
+        : `Sending to ${c.en||c.n}: $${Math.round(rows[0].yr)}/yr in fees, vs $${Math.round(rows[2].yr)} via the cheapest channel.`;
+      try{
+        const p=nav.share({files:[f], text:txt+" remitcalc.pages.dev",
+          title: LANG==="zh"?"汇款成本计算器":"Remittance Cost Calculator"});
+        const r=await Promise.race([p.then(()=>"ok").catch(()=>"err"),
+          new Promise(x=>setTimeout(()=>x("timeout"),10000))]);
+        if(r==="ok") return;
+      }catch(e){}
+    }
+  }
+  // 兜底：弹层看图 / 下载（长按保存）
+  let dataURL;
+  try{ dataURL=drawShare().toDataURL("image/png"); }
+  catch(e){ alert(LANG==="zh"?"出图失败，请重试":"Image failed, please retry"); return; }
+  const img=$("#ovimg");
+  img.src=dataURL;
+  $("#ovtip").textContent = LANG==="zh"
+    ? "长按图片保存，或点下方下载。发到 WhatsApp / Telegram 群里，让更多工友看清这笔账。"
+    : "Long-press to save, or download below. Share it in your WhatsApp / Telegram group.";
+  $("#ovdl").onclick=()=>{
+    const a=document.createElement("a");
+    a.href=dataURL; a.download=`remitcost-${LANG}-${Math.round(Date.now()/1000)}.png`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  };
+  $("#ovclose").onclick=()=>$("#ov").classList.remove("on");
+  $("#ov").classList.add("on");
+}
+$("#shareimg").onclick=showShare;
+$("#ov").onclick=(e)=>{ if(e.target.id==="ov") $("#ov").classList.remove("on"); };
+
+if(PRESET){$("#to").value=PRESET;}
+render();
+</script>
+</body>
+</html>
