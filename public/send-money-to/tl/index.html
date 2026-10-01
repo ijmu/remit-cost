@@ -208,7 +208,7 @@ const TXT = {
     ctaP: "数字渠道和 P2P 转账需要先在交易所开户。<br>注册完全免费，不开通任何付费服务。",
     ctaBtn: "注册交易所 · 免费 →",
     disc: "本页为成本信息工具，不构成投资建议，不保证任何渠道的实际费率。<br>加密资产存在价格波动与法规风险，请自行判断。",
-    src: "成本基准：World Bank Remittance Prices Worldwide（按单笔 200 美元统计）· 汇率：open.er-api.com",
+    src: "成本基准：World Bank Remittance Prices Worldwide（按单笔 200 美元统计）· 汇率：open.er-api.com · 汇率更新：{fx}",
   },
   en: {
     h1: ()=>'How much of your money <em>never makes it home?</em>',
@@ -238,7 +238,7 @@ const TXT = {
     ctaP: "Digital and P2P transfers require an exchange account.<br>Opening one is free — no paid services involved.",
     ctaBtn: "Open a free account →",
     disc: "This page is a cost-information tool. It is not investment advice and does not guarantee any provider's rates.<br>Crypto assets carry price and regulatory risk. Judge for yourself.",
-    src: "Cost benchmark: World Bank Remittance Prices Worldwide (based on $200 transfers) · FX: open.er-api.com",
+    src: "Cost benchmark: World Bank Remittance Prices Worldwide (based on $200 transfers) · FX: open.er-api.com · FX updated: {fx}",
   }
 };
 
@@ -316,7 +316,12 @@ function render(){
   $("#cta-h").textContent=T.ctaH; $("#cta-p").innerHTML=T.ctaP; $("#cta-btn").textContent=T.ctaBtn;
   $("#cta-btn").href=REF;
   $("#shlbl").textContent = LANG==="zh" ? "生成分享图 · 发到群里" : "Create a share image";
-  $("#disc").innerHTML=T.disc; $("#src").textContent=T.src;
+  $("#disc").innerHTML=T.disc;
+  /* 汇率更新时间：标出来源，用户能自己核（数据新的还是旧的，一目了然） */
+  const MO={Jan:"01",Feb:"02",Mar:"03",Apr:"04",May:"05",Jun:"06",Jul:"07",Aug:"08",Sep:"09",Oct:"10",Nov:"11",Dec:"12"};
+  const mm=(DATA.updated||"").match(/^\w{3}, (\d{2}) (\w{3}) (\d{4})/);
+  const fxd=mm?`${mm[3]}-${MO[mm[2]]||mm[2]}-${mm[1]}`:"—";
+  $("#src").textContent=T.src.replace("{fx}", fxd);
 }
 $("#langbtn").onclick=()=>{LANG=LANG==="zh"?"en":"zh";render();};
 $("#amt").oninput=render;
